@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VIBE - Music That Matches Your Vibe</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F4F6;
+    --card: #FFFFFF;
+    --text: #22223B;
+    --gray: #6B6B80;
+    --line: #DDDDE3;
+    --main: #3F51B5;
+    --main-text: #FFFFFF;
+
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15142A; --card: #201F3A; --text: #F2F1FA; --gray: #A9A8C4;
+      --line: #33314F; --main: #8F86FF; --main-text: #15142A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15142A; --card: #201F3A; --text: #F2F1FA; --gray: #A9A8C4;
+    --line: #33314F; --main: #8F86FF; --main-text: #15142A;
+  }
+
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+    line-height: 1.6;
+  }
+  h1, h2, h3, p { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+
+  /* navbar */
+  header {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    z-index: 10;
+  }
+  .nav { display: flex; align-items: center; gap: 20px; height: 60px; }
+  .logo { font-size: 22px; font-weight: 700; color: var(--main); }
+  .menu { display: flex; gap: 6px; overflow-x: auto; }
+  .menu a { padding: 6px 12px; border-radius: 8px; color: var(--gray); font-weight: 500; white-space: nowrap; }
+  .menu a:hover { color: var(--text); }
+  .menu a.active { background: var(--main); color: var(--main-text); }
+
+  /* pages */
+  .page { display: none; padding: 40px 0 60px; }
+  .page.show { display: block; }
+  .page h1 { font-size: 32px; margin-bottom: 6px; }
+  .subtitle { color: var(--gray); margin-bottom: 28px; }
+  .section { margin-top: 56px; }
+  .section h2 { font-size: 22px; margin-bottom: 16px; }
+
+  /* hero */
+  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+  .hero h1 { font-size: 46px; line-height: 1.15; margin-bottom: 14px; }
+  .hero p { color: var(--gray); margin-bottom: 24px; }
+  .button { display: inline-block; background: var(--main); color: var(--main-text); padding: 12px 24px; border-radius: 8px; font-weight: 600; }
+  .button:hover { opacity: .9; }
+  .mini-covers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* gradient colors */
+  .daniel { background: #2F5D6E; color: #fff; }
+  .justin { background: #E9B949; color: #3b2a08; }
+  .taylor { background: #C7B8E8; color: #2b1f55; }
+  .ed     { background: #B34A3A; color: #fff; }
+
+  /* covers */
+  .cover {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 14px;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.2;
+  }
+  .cover small { font-weight: 400; font-size: 12px; opacity: .85; margin-top: 2px; }
+
+  /* cards */
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  .card h3 { font-size: 17px; margin-top: 12px; }
+  .card p { color: var(--gray); font-size: 14px; }
+  .photo {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    font-weight: 700;
+  }
+  .link { color: var(--main); font-weight: 600; display: inline-block; margin-top: 14px; }
+
+  /* albums page */
+  .album { display: flex; gap: 20px; align-items: center; }
+  .album .cover { width: 150px; flex: none; }
+  .album h3 { font-size: 20px; margin-top: 0; }
+  .song { margin-top: 10px; font-size: 14px; }
+  .song b { color: var(--main); }
+
+  .play { display: inline-block; margin-top: 10px; background: var(--main); color: var(--main-text); padding: 5px 14px; border-radius: 6px; font-size: 14px; font-weight: 600; }
+  .play:hover { opacity: .9; }
+  .pick { font-size: 14px; margin-top: 8px; }
+  .pick b { color: var(--main); }
+
+  /* news */
+  .news-item { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--main); border-radius: 8px; padding: 16px 18px; margin-bottom: 14px; }
+  .news-item .who { font-size: 13px; color: var(--main); font-weight: 600; }
+  .news-item h3 { font-size: 18px; margin: 2px 0 4px; }
+  .news-item p { color: var(--gray); font-size: 15px; }
+
+  /* about */
+  .about { max-width: 600px; }
+  .about p { margin-bottom: 14px; }
+  .about ul { color: var(--gray); padding-left: 20px; }
+
+  /* footer */
+  footer { background: var(--card); border-top: 1px solid var(--line); padding: 28px 0; text-align: center; color: var(--gray); font-size: 14px; }
+  footer .brand { color: var(--text); font-weight: 600; font-size: 16px; }
+  footer .links { margin: 8px 0; }
+  footer .links a { padding: 0 6px; }
+  footer .links a:hover { color: var(--main); }
+
+  @media (max-width: 720px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 36px; }
+    .grid4 { grid-template-columns: repeat(2, 1fr); }
+    .grid2 { grid-template-columns: 1fr; }
+    .album .cover { width: 110px; }
+    .nav { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a class="logo" href="#" data-page="home">VIBE</a>
+    <nav class="menu">
+      <a href="#" data-page="home">Home</a>
+      <a href="#" data-page="artists">Artists</a>
+      <a href="#" data-page="albums">Albums</a>
+      <a href="#" data-page="news">News</a>
+      <a href="#" data-page="about">About</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HOME ================= -->
+<div class="page" id="home">
+  <div class="container">
+    <div class="hero">
+      <div>
+        <h1>Music That Matches Your Vibe</h1>
+        <p>Kenalan sama empat artis favorit dan dengerin satu lagu pilihan dari tiap albumnya.</p>
+        <a class="button" href="#" data-page="artists">Explore Artists</a>
+      </div>
+      <div class="mini-covers">
+        <div class="cover daniel">Never Enough<small>Daniel Caesar</small></div>
+        <div class="cover justin">My World<small>Justin Bieber</small></div>
+        <div class="cover taylor">1989<small>Taylor Swift</small></div>
+        <div class="cover ed">x<small>Ed Sheeran</small></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Featured Artists</h2>
+      <div class="grid4">
+        <div class="card"><div class="photo daniel">DC</div><h3>Daniel Caesar</h3><p>R&amp;B / Soul</p></div>
+        <div class="card"><div class="photo justin">JB</div><h3>Justin Bieber</h3><p>Pop / R&amp;B</p></div>
+        <div class="card"><div class="photo taylor">TS</div><h3>Taylor Swift</h3><p>Pop</p></div>
+        <div class="card"><div class="photo ed">ES</div><h3>Ed Sheeran</h3><p>Pop / Folk</p></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Featured Albums</h2>
+      <div class="grid4">
+        <div class="card"><div class="cover daniel">Never Enough</div><h3>Never Enough</h3><p>Daniel Caesar</p><div class="pick">Song pick: <b>Always</b></div><a class="play" href="https://www.youtube.com/results?search_query=Daniel+Caesar+Always" target="_blank" rel="noopener">Play</a></div>
+        <div class="card"><div class="cover justin">My World</div><h3>My World</h3><p>Justin Bieber</p><div class="pick">Song pick: <b>One Time</b></div><a class="play" href="https://www.youtube.com/results?search_query=Justin+Bieber+One+Time" target="_blank" rel="noopener">Play</a></div>
+        <div class="card"><div class="cover taylor">1989</div><h3>1989</h3><p>Taylor Swift</p><div class="pick">Song pick: <b>Blank Space</b></div><a class="play" href="https://www.youtube.com/results?search_query=Taylor+Swift+Blank+Space" target="_blank" rel="noopener">Play</a></div>
+        <div class="card"><div class="cover ed">x</div><h3>x (Multiply)</h3><p>Ed Sheeran</p><div class="pick">Song pick: <b>Thinking Out Loud</b></div><a class="play" href="https://www.youtube.com/results?search_query=Ed+Sheeran+Thinking+Out+Loud" target="_blank" rel="noopener">Play</a></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Latest News</h2>
+      <div class="news-item">
+        <div class="who">Taylor Swift</div>
+        <h3>1989 menang Album of the Year di Grammy 2016</h3>
+      </div>
+      <div class="news-item">
+        <div class="who">Ed Sheeran</div>
+        <h3>Thinking Out Loud menang Song of the Year</h3>
+      </div>
+      <div class="news-item">
+        <div class="who">Daniel Caesar</div>
+        <h3>Best Part bareng H.E.R. raih Grammy</h3>
+      </div>
+      <a class="link" href="#" data-page="news">Lihat semua berita</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ARTISTS ================= -->
+<div class="page" id="artists">
+  <div class="container">
+    <h1>Artists</h1>
+    <p class="subtitle">Empat artis yang ada di VIBE.</p>
+    <div class="grid2">
+      <div class="card"><div class="photo daniel">DC</div><h3>Daniel Caesar</h3><p>R&amp;B / Soul</p></div>
+      <div class="card"><div class="photo justin">JB</div><h3>Justin Bieber</h3><p>Pop / R&amp;B</p></div>
+      <div class="card"><div class="photo taylor">TS</div><h3>Taylor Swift</h3><p>Pop</p></div>
+      <div class="card"><div class="photo ed">ES</div><h3>Ed Sheeran</h3><p>Pop / Folk</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ALBUMS ================= -->
+<div class="page" id="albums">
+  <div class="container">
+    <h1>Albums</h1>
+    <p class="subtitle">Satu album dari tiap artis, lengkap dengan lagu yang wajib didengar.</p>
+    <div class="grid2">
+      <div class="card album">
+        <div class="cover daniel">Never Enough</div>
+        <div>
+          <h3>Never Enough</h3>
+          <p>Daniel Caesar, 2023</p>
+          <div class="song">Song pick: <b>Always</b></div>
+          <a class="play" href="https://www.youtube.com/results?search_query=Daniel+Caesar+Always" target="_blank" rel="noopener">Play</a>
+        </div>
+      </div>
+      <div class="card album">
+        <div class="cover justin">My World</div>
+        <div>
+          <h3>My World</h3>
+          <p>Justin Bieber, 2009</p>
+          <div class="song">Song pick: <b>One Time</b></div>
+          <a class="play" href="https://www.youtube.com/results?search_query=Justin+Bieber+One+Time" target="_blank" rel="noopener">Play</a>
+        </div>
+      </div>
+      <div class="card album">
+        <div class="cover taylor">1989</div>
+        <div>
+          <h3>1989</h3>
+          <p>Taylor Swift, 2014</p>
+          <div class="song">Song pick: <b>Blank Space</b></div>
+          <a class="play" href="https://www.youtube.com/results?search_query=Taylor+Swift+Blank+Space" target="_blank" rel="noopener">Play</a>
+        </div>
+      </div>
+      <div class="card album">
+        <div class="cover ed">x</div>
+        <div>
+          <h3>x (Multiply)</h3>
+          <p>Ed Sheeran, 2014</p>
+          <div class="song">Song pick: <b>Thinking Out Loud</b></div>
+          <a class="play" href="https://www.youtube.com/results?search_query=Ed+Sheeran+Thinking+Out+Loud" target="_blank" rel="noopener">Play</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= NEWS ================= -->
+<div class="page" id="news">
+  <div class="container">
+    <h1>News</h1>
+    <p class="subtitle">Kabar dan info singkat seputar keempat artis.</p>
+    <div class="news-item">
+      <div class="who">Taylor Swift</div>
+      <h3>1989 menang Album of the Year di Grammy 2016</h3>
+      <p>Album pop yang melahirkan Blank Space ini membawa pulang penghargaan tertinggi di Grammy Awards ke-58.</p>
+    </div>
+    <div class="news-item">
+      <div class="who">Ed Sheeran</div>
+      <h3>Thinking Out Loud menang Song of the Year</h3>
+      <p>Lagu balada Ed Sheeran dari album x ini meraih Grammy untuk kategori Song of the Year pada 2016.</p>
+    </div>
+    <div class="news-item">
+      <div class="who">Daniel Caesar</div>
+      <h3>Best Part bareng H.E.R. raih Grammy</h3>
+      <p>Duet dari album Freudian ini menang Best R&amp;B Performance dan jadi salah satu lagu andalan Daniel Caesar.</p>
+    </div>
+    <div class="news-item">
+      <div class="who">Justin Bieber</div>
+      <h3>One Time, lagu yang jadi awal segalanya</h3>
+      <p>Single pertama Justin Bieber ini membuka proyek debutnya, My World, pada 2009.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<div class="page" id="about">
+  <div class="container">
+    <h1>About</h1>
+    <div class="about">
+      <p>VIBE adalah website musik sederhana yang dibuat untuk menampilkan informasi artis, album, dan update musik.</p>
+      <p>VIBE juga menampilkan artis favorit yang dipilih sendiri oleh pembuatnya, lengkap dengan album dan satu lagu andalan dari tiap artis.</p>
+      <p>Di sini kamu bisa menemukan:</p>
+      <ul>
+        <li>Artists: siapa mereka dan genre yang dimainkan</li>
+        <li>Albums: cover album dan satu lagu pilihan yang bisa langsung diputar</li>
+        <li>News: kabar singkat tentang tiap artis</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="brand">VIBE &ndash; Music That Matches Your Vibe</div>
+    <div class="links">
+      <a href="#" data-page="home">Home</a> |
+      <a href="#" data-page="artists">Artists</a> |
+      <a href="#" data-page="albums">Albums</a> |
+      <a href="#" data-page="news">News</a> |
+      <a href="#" data-page="about">About</a>
+    </div>
+    <div>&copy; 2026 VIBE</div>
+  </div>
+</footer>
+
+<script>
+  var pages = ["home", "artists", "albums", "news", "about"];
+
+  function showPage(name) {
+    // tampilkan halaman yang dipilih, sembunyikan yang lain
+    for (var i = 0; i < pages.length; i++) {
+      document.getElementById(pages[i]).classList.toggle("show", pages[i] === name);
+    }
+    // tandai menu yang aktif
+    var links = document.querySelectorAll(".menu a");
+    for (var j = 0; j < links.length; j++) {
+      links[j].classList.toggle("active", links[j].dataset.page === name);
+    }
+    window.scrollTo(0, 0);
+  }
+
+  // semua link yang punya data-page bisa diklik
+  var all = document.querySelectorAll("[data-page]");
+  for (var k = 0; k < all.length; k++) {
+    all[k].addEventListener("click", function (e) {
+      e.preventDefault();
+      showPage(this.dataset.page);
+    });
+  }
+
+  // halaman pertama = Home
+  showPage("home");
+</script>
+</body>
+</html>
