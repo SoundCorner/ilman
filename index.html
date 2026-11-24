@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
+<script>try{if(sessionStorage.getItem("sc:seen")){document.documentElement.classList.add("no-splash");}sessionStorage.setItem("sc:seen","1");}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SoundCorner - Music That Matches Your Vibe</title>
 <meta name="description" content="SoundCorner: kenalan sama empat artis favorit, dengerin lagu pilihan dari tiap album, dan cari lagu sesuai mood hari ini.">
@@ -19,6 +20,8 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="intro">
+<div class="splash" id="splash" aria-hidden="true"><i></i><b>SoundCorner</b></div>
+<div class="ambient" id="ambient" aria-hidden="true"></div>
 
 <header>
   <div class="container nav">
@@ -41,6 +44,16 @@
     </nav>
     <div class="actions">
       <a class="fav-link" href="#" data-page="playlist" aria-label="Playlist saya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg><span class="count" id="favCount"></span></a>
+      <div class="accent-wrap"><button class="icon-btn" id="accentBtn" type="button" aria-label="Pilih warna aksen" aria-haspopup="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-.9 2-1.8 0-1.2-1-1.5-1-2.7 0-1 .8-1.5 1.8-1.5H17a4 4 0 0 0 4-4C21 6.8 17 3 12 3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/></svg></button>
+        <div class="accent-menu" id="accentMenu" hidden role="group" aria-label="Warna aksen">
+          <button type="button" data-accent="default" aria-pressed="true" aria-label="Bawaan (putih/hitam)" style="--s:var(--text)"></button>
+          <button type="button" data-accent="daniel" aria-pressed="false" aria-label="Biru" style="--s:var(--daniel)"></button>
+          <button type="button" data-accent="justin" aria-pressed="false" aria-label="Oranye" style="--s:var(--justin)"></button>
+          <button type="button" data-accent="taylor" aria-pressed="false" aria-label="Pink" style="--s:var(--taylor)"></button>
+          <button type="button" data-accent="ariana" aria-pressed="false" aria-label="Ungu" style="--s:var(--ariana)"></button>
+          <button type="button" data-accent="ceria" aria-pressed="false" aria-label="Hijau" style="--s:var(--ceria)"></button>
+          <button type="button" id="soundToggle" aria-pressed="true" aria-label="Suara klik"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path class="w" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/><path class="x" d="M16 9.5l5 5M21 9.5l-5 5"/></svg></button>
+        </div></div>
       <button class="icon-btn" id="themeBtn" type="button" aria-label="Ganti tema">
         <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>
         <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -70,12 +83,20 @@
       </div>
     </div>
 
+    <div class="marquee" aria-hidden="true"><div class="marquee-track"><div class="mq"><span>JUSTIN BIEBER</span><span>ARIANA GRANDE</span><span>DANIEL CAESAR</span><span>TAYLOR SWIFT</span></div><div class="mq"><span>JUSTIN BIEBER</span><span>ARIANA GRANDE</span><span>DANIEL CAESAR</span><span>TAYLOR SWIFT</span></div></div></div>
+
+    <div class="stats" id="stats">
+      <div><b data-n="4">0</b><span>Artis</span></div>
+      <div><b data-n="4">0</b><span>Album</span></div>
+      <div><b data-n="4">0</b><span>Mood</span></div>
+      <div><b data-n="32" id="statSongs">0</b><span>Lagu</span></div>
+    </div>
+
     <div class="section">
       <div class="section-head"><h2>Mood hari ini?</h2><a class="link" href="#" data-page="mood">Buka semua rekomendasi</a></div>
       <div class="chips">
         <a class="chip" href="#" data-page="mood" data-mood="santai" style="--m:var(--daniel)">Santai</a>
         <a class="chip" href="#" data-page="mood" data-mood="semangat" style="--m:var(--justin)">Semangat</a>
-        <a class="chip" href="#" data-page="mood" data-mood="ceria" style="--m:var(--ceria)">Ceria</a>
         <a class="chip" href="#" data-page="mood" data-mood="romantis" style="--m:var(--taylor)">Romantis</a>
         <a class="chip" href="#" data-page="mood" data-mood="galau" style="--m:var(--galau)">Galau</a>
       </div>
@@ -96,7 +117,7 @@
       <div class="grid4 albums">
         <div class="album-card t-justin" data-pkey="Justin Bieber|One Time"><div class="cover-wrap"><div class="pic c-justin" role="img" aria-label="My World cover"></div><button class="heart on-cover" type="button" data-fav data-song="One Time" data-artist="Justin Bieber" data-k="justin" aria-pressed="false" aria-label="Simpan One Time ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>My World</h3><p>Justin Bieber</p><div class="pick">Song pick: <b>One Time</b></div><a class="play" href="https://open.spotify.com/search/Justin%20Bieber%20One%20Time" target="_blank" rel="noopener" data-play data-song="One Time" data-artist="Justin Bieber" data-k="justin"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a></div></div>
         <div class="album-card t-ariana" data-pkey="Ariana Grande|thank u, next"><div class="cover-wrap"><div class="pic c-ariana" role="img" aria-label="thank u, next cover"></div><button class="heart on-cover" type="button" data-fav data-song="thank u, next" data-artist="Ariana Grande" data-k="ariana" aria-pressed="false" aria-label="Simpan thank u, next ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>thank u, next</h3><p>Ariana Grande</p><div class="pick">Song pick: <b>thank u, next</b></div><a class="play" href="https://open.spotify.com/search/Ariana%20Grande%20thank%20u%2C%20next" target="_blank" rel="noopener" data-play data-song="thank u, next" data-artist="Ariana Grande" data-k="ariana"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a></div></div>
-        <div class="album-card t-daniel" data-pkey="Daniel Caesar|Superpower"><div class="cover-wrap"><div class="pic c-daniel" role="img" aria-label="Never Enough cover"></div><button class="heart on-cover" type="button" data-fav data-song="Superpower" data-artist="Daniel Caesar" data-k="daniel" aria-pressed="false" aria-label="Simpan Superpower ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>Never Enough</h3><p>Daniel Caesar</p><div class="pick">Song pick: <b>Superpower</b></div><a class="play" href="https://open.spotify.com/search/Daniel%20Caesar%20Superpower" target="_blank" rel="noopener" data-play data-song="Superpower" data-artist="Daniel Caesar" data-k="daniel"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a></div></div>
+        <div class="album-card t-daniel" data-pkey="Daniel Caesar|Superpowers"><div class="cover-wrap"><div class="pic c-daniel" role="img" aria-label="Never Enough cover"></div><button class="heart on-cover" type="button" data-fav data-song="Superpowers" data-artist="Daniel Caesar" data-k="daniel" aria-pressed="false" aria-label="Simpan Superpowers ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>Never Enough</h3><p>Daniel Caesar</p><div class="pick">Song pick: <b>Superpowers</b></div><a class="play" href="https://open.spotify.com/search/Daniel%20Caesar%20Superpowers" target="_blank" rel="noopener" data-play data-song="Superpowers" data-artist="Daniel Caesar" data-k="daniel"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a></div></div>
         <div class="album-card t-taylor" data-pkey="Taylor Swift|Blank Space"><div class="cover-wrap"><div class="pic c-taylor" role="img" aria-label="1989 cover"></div><button class="heart on-cover" type="button" data-fav data-song="Blank Space" data-artist="Taylor Swift" data-k="taylor" aria-pressed="false" aria-label="Simpan Blank Space ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>1989</h3><p>Taylor Swift</p><div class="pick">Song pick: <b>Blank Space</b></div><a class="play" href="https://open.spotify.com/search/Taylor%20Swift%20Blank%20Space" target="_blank" rel="noopener" data-play data-song="Blank Space" data-artist="Taylor Swift" data-k="taylor"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a></div></div>
       </div>
     </div>
@@ -133,10 +154,10 @@
       <p class="subtitle">Satu album dari tiap artis, lengkap dengan lagu yang wajib didengar.</p>
     </div>
     <div class="grid2">
-      <div class="album-card row t-justin" data-pkey="Justin Bieber|One Time"><div class="cover-wrap"><div class="pic c-justin" role="img" aria-label="My World cover"></div><button class="heart on-cover" type="button" data-fav data-song="One Time" data-artist="Justin Bieber" data-k="justin" aria-pressed="false" aria-label="Simpan One Time ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>My World</h3><p>Justin Bieber, 2009</p><div class="pick">Song pick: <b>One Time</b></div><a class="play" href="https://open.spotify.com/search/Justin%20Bieber%20One%20Time" target="_blank" rel="noopener" data-play data-song="One Time" data-artist="Justin Bieber" data-k="justin"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a><div class="more">Lagu lain: <a href="https://open.spotify.com/search/Justin%20Bieber%20Baby" target="_blank" rel="noopener" data-play data-song="Baby" data-artist="Justin Bieber" data-k="justin">Baby</a><a href="https://open.spotify.com/search/Justin%20Bieber%20Love%20Yourself" target="_blank" rel="noopener" data-play data-song="Love Yourself" data-artist="Justin Bieber" data-k="justin">Love Yourself</a><a href="https://open.spotify.com/search/Justin%20Bieber%20Peaches" target="_blank" rel="noopener" data-play data-song="Peaches" data-artist="Justin Bieber" data-k="justin">Peaches</a></div></div></div>
-      <div class="album-card row t-ariana" data-pkey="Ariana Grande|thank u, next"><div class="cover-wrap"><div class="pic c-ariana" role="img" aria-label="thank u, next cover"></div><button class="heart on-cover" type="button" data-fav data-song="thank u, next" data-artist="Ariana Grande" data-k="ariana" aria-pressed="false" aria-label="Simpan thank u, next ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>thank u, next</h3><p>Ariana Grande, 2019</p><div class="pick">Song pick: <b>thank u, next</b></div><a class="play" href="https://open.spotify.com/search/Ariana%20Grande%20thank%20u%2C%20next" target="_blank" rel="noopener" data-play data-song="thank u, next" data-artist="Ariana Grande" data-k="ariana"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a><div class="more">Lagu lain: <a href="https://open.spotify.com/search/Ariana%20Grande%207%20rings" target="_blank" rel="noopener" data-play data-song="7 rings" data-artist="Ariana Grande" data-k="ariana">7 rings</a><a href="https://open.spotify.com/search/Ariana%20Grande%20positions" target="_blank" rel="noopener" data-play data-song="positions" data-artist="Ariana Grande" data-k="ariana">positions</a><a href="https://open.spotify.com/search/Ariana%20Grande%20no%20tears%20left%20to%20cry" target="_blank" rel="noopener" data-play data-song="no tears left to cry" data-artist="Ariana Grande" data-k="ariana">no tears left to cry</a></div></div></div>
-      <div class="album-card row t-daniel" data-pkey="Daniel Caesar|Superpower"><div class="cover-wrap"><div class="pic c-daniel" role="img" aria-label="Never Enough cover"></div><button class="heart on-cover" type="button" data-fav data-song="Superpower" data-artist="Daniel Caesar" data-k="daniel" aria-pressed="false" aria-label="Simpan Superpower ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>Never Enough</h3><p>Daniel Caesar, 2023</p><div class="pick">Song pick: <b>Superpower</b></div><a class="play" href="https://open.spotify.com/search/Daniel%20Caesar%20Superpower" target="_blank" rel="noopener" data-play data-song="Superpower" data-artist="Daniel Caesar" data-k="daniel"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a><div class="more">Lagu lain: <a href="https://open.spotify.com/search/Daniel%20Caesar%20Best%20Part" target="_blank" rel="noopener" data-play data-song="Best Part" data-artist="Daniel Caesar" data-k="daniel">Best Part</a><a href="https://open.spotify.com/search/Daniel%20Caesar%20Get%20You" target="_blank" rel="noopener" data-play data-song="Get You" data-artist="Daniel Caesar" data-k="daniel">Get You</a><a href="https://open.spotify.com/search/Daniel%20Caesar%20Japanese%20Denim" target="_blank" rel="noopener" data-play data-song="Japanese Denim" data-artist="Daniel Caesar" data-k="daniel">Japanese Denim</a></div></div></div>
-      <div class="album-card row t-taylor" data-pkey="Taylor Swift|Blank Space"><div class="cover-wrap"><div class="pic c-taylor" role="img" aria-label="1989 cover"></div><button class="heart on-cover" type="button" data-fav data-song="Blank Space" data-artist="Taylor Swift" data-k="taylor" aria-pressed="false" aria-label="Simpan Blank Space ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>1989</h3><p>Taylor Swift, 2014</p><div class="pick">Song pick: <b>Blank Space</b></div><a class="play" href="https://open.spotify.com/search/Taylor%20Swift%20Blank%20Space" target="_blank" rel="noopener" data-play data-song="Blank Space" data-artist="Taylor Swift" data-k="taylor"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a><div class="more">Lagu lain: <a href="https://open.spotify.com/search/Taylor%20Swift%20Shake%20It%20Off" target="_blank" rel="noopener" data-play data-song="Shake It Off" data-artist="Taylor Swift" data-k="taylor">Shake It Off</a><a href="https://open.spotify.com/search/Taylor%20Swift%20Love%20Story" target="_blank" rel="noopener" data-play data-song="Love Story" data-artist="Taylor Swift" data-k="taylor">Love Story</a><a href="https://open.spotify.com/search/Taylor%20Swift%20All%20Too%20Well" target="_blank" rel="noopener" data-play data-song="All Too Well" data-artist="Taylor Swift" data-k="taylor">All Too Well</a></div></div></div>
+      <div class="album-card row t-justin" data-pkey="Justin Bieber|One Time"><div class="cover-wrap"><div class="pic c-justin" role="img" aria-label="My World cover"></div><button class="heart on-cover" type="button" data-fav data-song="One Time" data-artist="Justin Bieber" data-k="justin" aria-pressed="false" aria-label="Simpan One Time ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>My World</h3><p>Justin Bieber, 2009</p><div class="pick">Song pick: <b>One Time</b></div><a class="play" href="https://open.spotify.com/search/Justin%20Bieber%20One%20Time" target="_blank" rel="noopener" data-play data-song="One Time" data-artist="Justin Bieber" data-k="justin"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a><a class="album-open" href="https://open.spotify.com/album/1rG5TDs3jYh6OU753I54CI" target="_blank" rel="noopener">Buka album di Spotify</a><div class="more">Lagu lain di album ini: <a href="https://open.spotify.com/search/Justin%20Bieber%20One%20Less%20Lonely%20Girl" target="_blank" rel="noopener" data-play data-song="One Less Lonely Girl" data-artist="Justin Bieber" data-k="justin">One Less Lonely Girl</a><a href="https://open.spotify.com/search/Justin%20Bieber%20Love%20Me" target="_blank" rel="noopener" data-play data-song="Love Me" data-artist="Justin Bieber" data-k="justin">Love Me</a></div></div></div>
+      <div class="album-card row t-ariana" data-pkey="Ariana Grande|thank u, next"><div class="cover-wrap"><div class="pic c-ariana" role="img" aria-label="thank u, next cover"></div><button class="heart on-cover" type="button" data-fav data-song="thank u, next" data-artist="Ariana Grande" data-k="ariana" aria-pressed="false" aria-label="Simpan thank u, next ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>thank u, next</h3><p>Ariana Grande, 2019</p><div class="pick">Song pick: <b>thank u, next</b></div><a class="play" href="https://open.spotify.com/search/Ariana%20Grande%20thank%20u%2C%20next" target="_blank" rel="noopener" data-play data-song="thank u, next" data-artist="Ariana Grande" data-k="ariana"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a><a class="album-open" href="https://open.spotify.com/album/2fYhqwDWXjbpjaIJPEfKFw" target="_blank" rel="noopener">Buka album di Spotify</a><div class="more">Lagu lain di album ini: <a href="https://open.spotify.com/search/Ariana%20Grande%207%20rings" target="_blank" rel="noopener" data-play data-song="7 rings" data-artist="Ariana Grande" data-k="ariana">7 rings</a><a href="https://open.spotify.com/search/Ariana%20Grande%20break%20up%20with%20your%20girlfriend%2C%20i%27m%20bored" target="_blank" rel="noopener" data-play data-song="break up with your girlfriend, i'm bored" data-artist="Ariana Grande" data-k="ariana">break up with your girlfriend, i'm bored</a></div></div></div>
+      <div class="album-card row t-daniel" data-pkey="Daniel Caesar|Superpowers"><div class="cover-wrap"><div class="pic c-daniel" role="img" aria-label="Never Enough cover"></div><button class="heart on-cover" type="button" data-fav data-song="Superpowers" data-artist="Daniel Caesar" data-k="daniel" aria-pressed="false" aria-label="Simpan Superpowers ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>Never Enough</h3><p>Daniel Caesar, 2023</p><div class="pick">Song pick: <b>Superpowers</b></div><a class="play" href="https://open.spotify.com/search/Daniel%20Caesar%20Superpowers" target="_blank" rel="noopener" data-play data-song="Superpowers" data-artist="Daniel Caesar" data-k="daniel"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a><a class="album-open" href="https://open.spotify.com/album/7ivbFszr1TbVadj89BIy1y" target="_blank" rel="noopener">Buka album di Spotify</a><div class="more">Lagu lain di album ini: <a href="https://open.spotify.com/search/Daniel%20Caesar%20Valentina" target="_blank" rel="noopener" data-play data-song="Valentina" data-artist="Daniel Caesar" data-k="daniel">Valentina</a><a href="https://open.spotify.com/search/Daniel%20Caesar%20Let%20Me%20Go" target="_blank" rel="noopener" data-play data-song="Let Me Go" data-artist="Daniel Caesar" data-k="daniel">Let Me Go</a></div></div></div>
+      <div class="album-card row t-taylor" data-pkey="Taylor Swift|Blank Space"><div class="cover-wrap"><div class="pic c-taylor" role="img" aria-label="1989 cover"></div><button class="heart on-cover" type="button" data-fav data-song="Blank Space" data-artist="Taylor Swift" data-k="taylor" aria-pressed="false" aria-label="Simpan Blank Space ke playlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C6 16.3 3 13.2 3 9.6 3 7.2 4.8 5.5 7 5.5c1.9 0 3.5 1 5 3 1.5-2 3.1-3 5-3 2.2 0 4 1.7 4 4.1 0 3.6-3 6.7-9 10.9z"/></svg></button></div><div class="album-info"><h3>1989</h3><p>Taylor Swift, 2014</p><div class="pick">Song pick: <b>Blank Space</b></div><a class="play" href="https://open.spotify.com/search/Taylor%20Swift%20Blank%20Space" target="_blank" rel="noopener" data-play data-song="Blank Space" data-artist="Taylor Swift" data-k="taylor"><i><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5v9l8-4.5z"/></svg></i>Play on Spotify</a><a class="album-open" href="https://open.spotify.com/album/5fy0X0JmZRZnVa2UEicIOl" target="_blank" rel="noopener">Buka album di Spotify</a><div class="more">Lagu lain di album ini: <a href="https://open.spotify.com/search/Taylor%20Swift%20Style" target="_blank" rel="noopener" data-play data-song="Style" data-artist="Taylor Swift" data-k="taylor">Style</a><a href="https://open.spotify.com/search/Taylor%20Swift%20Shake%20It%20Off" target="_blank" rel="noopener" data-play data-song="Shake It Off" data-artist="Taylor Swift" data-k="taylor">Shake It Off</a></div></div></div>
     </div>
   </div>
 </div>
@@ -151,13 +172,13 @@
     <div class="chips" role="group" aria-label="Pilih mood">
         <button class="chip" type="button" data-mood="santai" aria-pressed="false" style="--m:var(--daniel)">Santai</button>
         <button class="chip" type="button" data-mood="semangat" aria-pressed="false" style="--m:var(--justin)">Semangat</button>
-        <button class="chip" type="button" data-mood="ceria" aria-pressed="false" style="--m:var(--ceria)">Ceria</button>
         <button class="chip" type="button" data-mood="romantis" aria-pressed="false" style="--m:var(--taylor)">Romantis</button>
         <button class="chip" type="button" data-mood="galau" aria-pressed="false" style="--m:var(--galau)">Galau</button>
     </div>
     <div class="mood-panel" id="moodPanel" aria-live="polite">
       <div id="moodHead"></div>
       <ol class="song-list" id="songList"></ol>
+      <p class="mood-note">Catatan: lagu di menu Mood dipilih sesuai suasana dan artisnya, jadi tidak selalu berasal dari album yang ada di menu Album.</p>
     </div>
   </div>
 </div>
@@ -205,7 +226,8 @@
       <div class="about">
         <p>SoundCorner adalah website musik sederhana yang dibuat untuk menampilkan informasi artis, album, dan update musik.</p>
         <p>SoundCorner juga menampilkan artis favorit yang dipilih sendiri oleh pembuatnya, lengkap dengan album dan satu lagu andalan dari tiap artis.</p>
-        <p>Website ini dibuat oleh <b>Ilman Bieber</b>.</p>
+        <p>Website ini dibuat dan dikelola oleh <b>Ilman Zuhry</b>.</p>
+        <p><a class="button wa-btn" href="https://wa.me/62895330567097?text=Halo%20Ilman%2C%20aku%20dari%20website%20SoundCorner" target="_blank" rel="noopener">Hubungi lewat WhatsApp</a></p>
       </div>
       <div class="about-side">
         <div class="avatars">
@@ -232,7 +254,7 @@
       <div class="feature-grid">
         <a class="feature t-daniel" href="#" data-page="artists"><h3>Artists</h3><p>Kenalan sama artisnya dan lihat genre yang mereka mainkan.</p></a>
         <a class="feature t-justin" href="#" data-page="albums"><h3>Albums</h3><p>Lihat cover album dan satu lagu andalan, tinggal tekan play.</p></a>
-        <a class="feature t-ariana" href="#" data-page="mood"><h3>Mood</h3><p>Pilih santai, semangat, ceria, romantis, atau galau, lalu dapat daftar lagunya.</p></a>
+        <a class="feature t-ariana" href="#" data-page="mood"><h3>Mood</h3><p>Pilih santai, semangat, romantis, atau galau, lalu dapat daftar lagunya.</p></a>
         <a class="feature t-taylor" href="#" data-page="playlist"><h3>Playlist saya</h3><p>Tekan tombol hati di lagu mana saja, semuanya terkumpul di satu tempat.</p></a>
       </div>
     </div>
@@ -248,7 +270,7 @@
 
     <div class="section about-block credit">
       <div>
-        <h2>Dibuat oleh Ilman Bieber</h2>
+        <h2>Dibuat oleh Ilman Zuhry</h2>
         <p>Artis, album, dan lagu andalan dipilih sendiri oleh pembuatnya.</p>
       </div>
       <ul>
@@ -270,13 +292,15 @@
       <a href="#" data-page="mood">Mood</a>
       <a href="#" data-page="news">News</a>
       <a href="#" data-page="about">About</a>
+      <a href="https://wa.me/62895330567097?text=Halo%20Ilman%2C%20aku%20dari%20website%20SoundCorner" target="_blank" rel="noopener">WhatsApp</a>
     </div>
-    <div class="copy">&copy; 2026 SoundCorner &nbsp;|&nbsp; Dibuat oleh Ilman Bieber</div>
+    <div class="copy">&copy; 2026 SoundCorner &nbsp;|&nbsp; Dibuat oleh Ilman Zuhry</div>
   </div>
 </footer>
 <div class="wipe" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
 
+<button type="button" class="to-top" id="toTop" aria-label="Kembali ke atas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6 11l6-6 6 6"/></svg></button>
 <script src="script.js"></script>
 
 </body>
